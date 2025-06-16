@@ -33,7 +33,7 @@ const HomeTab = () => {
         tabBarActiveTintColor: '#03C75A', // 네이버 그린
         tabBarInactiveTintColor: '#999999',
         tabBarStyle: { backgroundColor: '#090909' },
-        // headerShown: false,
+        headerShown: false,
       }}
     >
       <Tab.Screen
