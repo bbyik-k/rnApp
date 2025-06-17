@@ -11,7 +11,9 @@ export default function ShoppingScreen({ navigation }: Props) {
     <View>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(RouteNames.BROWSER);
+          navigation.navigate(RouteNames.BROWSER, {
+            initialUrl: 'https://m.naver.com',
+          });
         }}
       >
         <Text>Go To Browser</Text>
