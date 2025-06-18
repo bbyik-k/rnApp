@@ -6,6 +6,7 @@ import {
   View,
   Animated,
   TouchableOpacity,
+  Share,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
@@ -150,6 +151,12 @@ export default function BrowserScreen({ route, navigation }: Props) {
           iconName="refresh"
           onPress={() => {
             webViewRef.current?.reload();
+          }}
+        />
+        <NavButton
+          iconName="share"
+          onPress={() => {
+            Share.share({ message: url });
           }}
         />
       </View>

@@ -12,7 +12,7 @@ const style = StyleSheet.create({
   contentContainerStyle: { flex: 1 },
 });
 
-const START_URI = 'https://shopping.naver.com';
+const START_URI = 'https://shopping.naver.com/ns/home';
 
 export default function ShoppingScreen({ navigation }: Props) {
   const webViewRef = useRef<WebView>(null);
