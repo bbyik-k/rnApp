@@ -7,6 +7,8 @@ import { RootStackParamList, RouteNames } from './routes';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BrowserScreen from './screens/BrowserScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LoginButton from './components/LoginButton';
+import LoginScreen from './screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,14 +59,30 @@ export default function App() {
         <Stack.Screen
           name={RouteNames.HOME_TAB}
           component={HomeTab}
-          options={{ headerShown: false }}
+          options={{
+            title: '',
+            headerStyle: {
+              backgroundColor: '#0d0d0d',
+            },
+            headerRight: LoginButton,
+          }}
         />
         <Stack.Screen
           name={RouteNames.BROWSER}
           component={BrowserScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen name="Profile" component={test} /> */}
+        <Stack.Screen
+          name={RouteNames.LOGIN}
+          component={LoginScreen}
+          options={{
+            title: '',
+            headerStyle: {
+              backgroundColor: '#0d0d0d',
+            },
+            headerTintColor: '#f9f9f9',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
