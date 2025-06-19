@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
 import { RootStackParamList } from '../routes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { WebViewContext } from '../components/WebViewProvider';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>;
 
@@ -76,6 +77,7 @@ const NavButton = ({
 };
 
 export default function BrowserScreen({ route, navigation }: Props) {
+  const context = useContext(WebViewContext);
   const { initialUrl } = route.params;
   const [url, setUrl] = useState(initialUrl);
   const urlTitle = useMemo(
@@ -108,7 +110,12 @@ export default function BrowserScreen({ route, navigation }: Props) {
         />
       </View>
       <WebView
-        ref={webViewRef}
+        ref={ref => {
+          webViewRef.current = ref;
+          if (ref !== null) {
+            context?.addWebView(ref);
+          }
+        }}
         source={{ uri: initialUrl }}
         onNavigationStateChange={event => {
           setCanGoBack(event.canGoBack);

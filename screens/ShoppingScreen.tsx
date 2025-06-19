@@ -1,9 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, RouteNames } from '../routes';
+import { WebViewContext } from '../components/WebViewProvider';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -15,6 +16,7 @@ const style = StyleSheet.create({
 const START_URI = 'https://shopping.naver.com/ns/home';
 
 export default function ShoppingScreen({ navigation }: Props) {
+  const context = useContext(WebViewContext);
   const webViewRef = useRef<WebView>(null);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
@@ -31,7 +33,12 @@ export default function ShoppingScreen({ navigation }: Props) {
         }
       >
         <WebView
-          ref={webViewRef}
+          ref={ref => {
+            webViewRef.current = ref;
+            if (ref !== null) {
+              context?.addWebView(ref);
+            }
+          }}
           source={{ uri: START_URI }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
