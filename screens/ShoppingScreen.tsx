@@ -43,7 +43,7 @@ export default function ShoppingScreen({ navigation }: Props) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           onShouldStartLoadWithRequest={request => {
-            console.log(request);
+            // console.log(request);
             if (
               request.url.startsWith(START_URI) ||
               request.mainDocumentURL?.startsWith(START_URI)

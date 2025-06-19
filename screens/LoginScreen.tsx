@@ -2,7 +2,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useContext, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
-import { RootStackParamList } from '../routes';
+import { RootStackParamList, RouteNames } from '../routes';
 import { useNavigation } from '@react-navigation/native';
 import { WebViewContext } from '../components/WebViewProvider';
 
@@ -18,7 +18,13 @@ export default function LoginScreen() {
   const context = useContext(WebViewContext);
 
   useEffect(() => {
-    console.log(context?.webViewRefs.current);
+    // console.log(context?.webViewRefs.current);
+    if (context?.webViewRefs.current != null) {
+      context.webViewRefs.current.forEach(webView => {
+        console.log('webView', webView);
+        // webView.reload();
+      });
+    }
   }, [context]);
 
   return (
@@ -29,10 +35,16 @@ export default function LoginScreen() {
           if (event.url === 'https://www.naver.com') {
             if (context?.webViewRefs.current != null) {
               context.webViewRefs.current.forEach(webView => {
+                console.log('webView', webView);
                 webView.reload();
               });
             }
-            navigation.goBack();
+            // navigation.goBack();
+            // navigation.navigate(RouteNames.HOME_TAB);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: RouteNames.HOME_TAB }],
+            });
           }
         }}
       />
