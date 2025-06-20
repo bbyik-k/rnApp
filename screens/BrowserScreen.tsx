@@ -13,6 +13,7 @@ import WebView from 'react-native-webview';
 import { RootStackParamList } from '../routes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { WebViewContext } from '../components/WebViewProvider';
+import { useBackHandler } from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>;
 
@@ -76,6 +77,16 @@ const NavButton = ({
   );
 };
 
+const DISABLE_PINCH_ZOOM = `(function() {
+  const meta = document.createElement('meta');
+  meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+  meta.setAttribute('name', 'viewport');
+  document.getElementsByTagName('head')[0].appendChild(meta);
+
+  document.body.style['user-select'] = 'none';
+  document.body.style['-webkit-user-select'] = 'none';
+})();`;
+
 export default function BrowserScreen({ route, navigation }: Props) {
   const context = useContext(WebViewContext);
   const { initialUrl } = route.params;
@@ -90,6 +101,14 @@ export default function BrowserScreen({ route, navigation }: Props) {
   const webViewRef = useRef<WebView>(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
+
+  useBackHandler(() => {
+    if (canGoBack) {
+      webViewRef.current?.goBack();
+      return true;
+    }
+    return false; //default
+  });
 
   return (
     <SafeAreaView style={style.safearea}>
@@ -129,6 +148,9 @@ export default function BrowserScreen({ route, navigation }: Props) {
         onLoadEnd={() => {
           progressAnim.setValue(0);
         }}
+        injectedJavaScript={DISABLE_PINCH_ZOOM}
+        onMessage={() => {}}
+        allowsLinkPreview={false}
       />
       <View style={style.navigator}>
         <TouchableOpacity
